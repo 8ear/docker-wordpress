@@ -1,13 +1,14 @@
 #!/bin/bash
 
 set -x
-NAME="wordpress"
+
+NAME=${NAME:-"test"}
 
 # Default value if var does not exist.
 DOCKER_USER=${DOCKER_USER:-"abc"}
 
 # latest
-docker build -t "$DOCKER_USER/$NAME:fpm" -f Dockerfile .
+docker build -t "$DOCKER_USER/$NAME:latest" -t "$DOCKER_USER/$NAME:fpm" -f Dockerfile .
 
 # Find all builded container
 CONTAINER_VERSION="$(docker image ls "$DOCKER_USER/$NAME" --format "{{.Tag}}")"
