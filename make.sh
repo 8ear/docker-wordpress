@@ -2,19 +2,23 @@
 
 set -x
 
-NAME=${NAME:-"test"}
-
 # Default value if var does not exist.
+NAME=${NAME:-"test"}
 DOCKER_USER=${DOCKER_USER:-"abc"}
 FOLDER=${FOLDER:-"."}
-DOCKERFILE=${DOCKERFILE:-"$FOLDER/Dockerfile"}
+TAG=$FOLDER
 
-# latest
-docker build -t "$DOCKER_USER/$NAME" -f "$DOCKERFILE" "$FOLDER"
+
+# Building
+for F in $FOLDER
+do
+    DOCKERFILE=${DOCKERFILE:-"$FOLDER/Dockerfile"}
+    docker build -t "$DOCKER_USER/$NAME:$F" -f "$DOCKERFILE" "$F"
+done
+
 
 # Find all builded container
 CONTAINER_VERSION="$(docker image ls "$DOCKER_USER/$NAME" --format "{{.Tag}}")"
-
 
 
 # Push hub.docker.com
