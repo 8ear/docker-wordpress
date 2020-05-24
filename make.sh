@@ -6,9 +6,11 @@ NAME=${NAME:-"test"}
 
 # Default value if var does not exist.
 DOCKER_USER=${DOCKER_USER:-"abc"}
+FOLDER=${FOLDER:-"."}
+DOCKERFILE=${DOCKERFILE:-"$FOLDER/Dockerfile"}
 
 # latest
-docker build -t "$DOCKER_USER/$NAME:latest" -t "$DOCKER_USER/$NAME:fpm" -f Dockerfile .
+docker build -t "$DOCKER_USER/$NAME" -f "$DOCKERFILE" "$FOLDER"
 
 # Find all builded container
 CONTAINER_VERSION="$(docker image ls "$DOCKER_USER/$NAME" --format "{{.Tag}}")"
@@ -16,7 +18,7 @@ CONTAINER_VERSION="$(docker image ls "$DOCKER_USER/$NAME" --format "{{.Tag}}")"
 
 
 # Push hub.docker.com
-if [[ ! -z "$DOCKER_PASS" ]] && [[ ! -z "$DOCKER_USER" ]]
+if [[ -n "$DOCKER_PASS" ]] && [[ -n "$DOCKER_USER" ]]
 then
     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
     for V in $CONTAINER_VERSION
@@ -27,7 +29,7 @@ fi
 
 
 # Push github repo
-if [[ ! -z "$GITHUB_PASS" ]] && [[ ! -z "$GITHUB_USER" ]]
+if [[ -n "$GITHUB_PASS" ]] && [[ -n "$GITHUB_USER" ]]
 then
     echo "$GITHUB_PASS" | docker login docker.pkg.github.com -u "$GITHUB_USER" --password-stdin
     for V in $CONTAINER_VERSION

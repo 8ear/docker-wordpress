@@ -13,14 +13,27 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Build container and push to registries
+    - name: Build wordpress:fpm container and push to registries
       env:
         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         GITHUB_PASS: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_USER: ${{ github.actor }}
         REPO: ${{ github.repository }}
-        NAME: wordpress
+        NAME: wordpress:fpm
+        FOLDER: fpm
       shell: bash
       run: |
         ./make.sh
+    - name: Build wordpress:cron container and push to registries
+    env:
+      DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      GITHUB_PASS: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_USER: ${{ github.actor }}
+      REPO: ${{ github.repository }}
+      NAME: wordpress:cron
+      FOLDER: cron
+    shell: bash
+    run: |
+      ./make.sh
