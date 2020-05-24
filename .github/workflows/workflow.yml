@@ -7,7 +7,7 @@ on:
     - cron:  '0 0 * * 0'
     - cron:  '0 0 * * 4'
 jobs:
-  run:
+  fpm:
     name: Run wordpress:fpm
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +25,7 @@ jobs:
       shell: bash
       run: |
         ./make.sh
-  run:
+  cron:
     name: Run wordpress:cron
     runs-on: ubuntu-latest
     steps:
