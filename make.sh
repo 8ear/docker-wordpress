@@ -6,15 +6,13 @@ set -x
 NAME=${NAME:-"test"}
 DOCKER_USER=${DOCKER_USER:-"abc"}
 FOLDER=${FOLDER:-"."}
-TAG=$FOLDER
+[ "$FOLDER" == "." ] && TAG=latest
+[ "$FOLDER" != "." ] && TAG=${TAG:-"$FOLDER"}
 
+DOCKERFILE=${DOCKERFILE:-"$FOLDER/Dockerfile"}
 
-# Building
-for F in $FOLDER
-do
-    DOCKERFILE=${DOCKERFILE:-"$FOLDER/Dockerfile"}
-    docker build -t "$DOCKER_USER/$NAME:$F" -f "$DOCKERFILE" "$F"
-done
+# Building    
+docker build -t "$DOCKER_USER/$NAME:$TAG" -f "$DOCKERFILE" "$FOLDER"
 
 
 # Find all builded container

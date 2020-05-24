@@ -7,13 +7,13 @@ on:
     - cron:  '0 0 * * 0'
     - cron:  '0 0 * * 4'
 jobs:
-  run:
+  fpm:
     name: Run wordpress:fpm
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Build wordpress:<FOLDER> container and push to registries
+    - name: Build wordpress:fpm container and push to registries
       env:
         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
@@ -21,7 +21,27 @@ jobs:
         GITHUB_USER: ${{ github.actor }}
         REPO: ${{ github.repository }}
         NAME: wordpress
-        FOLDER: fpm cron
+        FOLDER: fpm
       shell: bash
       run: |
         ./make.sh
+
+  cron:
+    name: Run wordpress:cron
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build wordpress:cron container and push to registries
+      env:
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        GITHUB_PASS: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_USER: ${{ github.actor }}
+        REPO: ${{ github.repository }}
+        NAME: wordpress
+        FOLDER: cron
+      shell: bash
+      run: |
+        ./make.sh
+      
