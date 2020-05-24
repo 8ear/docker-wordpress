@@ -45,3 +45,22 @@ jobs:
       run: |
         ./make.sh
       
+  latest:
+    name: Run wordpress:latest
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build wordpress:cron container and push to registries
+      env:
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        GITHUB_PASS: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_USER: ${{ github.actor }}
+        REPO: ${{ github.repository }}
+        NAME: wordpress
+        FOLDER: latest
+      shell: bash
+      run: |
+        ./make.sh
+      
