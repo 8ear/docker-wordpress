@@ -31,7 +31,7 @@ jobs:
       
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v6
         with:
           # list of Docker images to use as base name for tags
           # https://github.com/docker/build-push-action/blob/master/docs/advanced/push-multi-registries.md
